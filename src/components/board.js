@@ -1,4 +1,4 @@
-// Сортировка
+// Шаблон секции сортировки
 export const createBoardTemplate = () => {
   return (
     `<section class="board container">

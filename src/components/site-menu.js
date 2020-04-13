@@ -1,4 +1,4 @@
-// Меню
+// Шаблон секции меню сайта
 export const createSiteMenuTemplate = () => {
   return (
     `<section class="control__btn-wrap">
