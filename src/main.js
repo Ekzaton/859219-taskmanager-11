@@ -3,6 +3,7 @@ import {createBoardTemplate} from "./components/board.js";
 import {createFilterTemplate} from "./components/filter.js";
 import {createLoadMoreButtonTemplate} from "./components/load-more-button.js";
 import {createSiteMenuTemplate} from "./components/site-menu.js";
+import {createSortTemplate} from "./components/sort.js";
 import {createTaskEditTemplate} from "./components/task-edit.js";
 import {createTaskTemplate} from "./components/task.js";
 
@@ -26,13 +27,17 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
 
-// Отрисовка меню, фильтров и сортировки
+// Отрисовка меню, фильтров и основного контента
 render(siteHeaderElement, createSiteMenuTemplate(), `beforeend`);
 render(siteMainElement, createFilterTemplate(filters), `beforeend`);
 render(siteMainElement, createBoardTemplate(), `beforeend`);
 
-const taskListElement = siteMainElement.querySelector(`.board__tasks`);
 const boardElement = siteMainElement.querySelector(`.board`);
+
+// Отрисовка сортировки
+render(boardElement, createSortTemplate(), `afterbegin`);
+
+const taskListElement = siteMainElement.querySelector(`.board__tasks`);
 
 // Отрисовка формы
 render(taskListElement, createTaskEditTemplate(tasks[0]), `beforeend`);

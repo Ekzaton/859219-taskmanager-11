@@ -1,6 +1,6 @@
 // Импорт
 import {COLORS, DAYS, MONTH_NAMES} from "../const.js";
-import {formatTime} from "../utils.js";
+import {createElement, formatTime} from "../utils.js";
 
 // Разметка цветов
 const createColorsMarkup = (colors, currentColor) => {
@@ -25,7 +25,7 @@ const createColorsMarkup = (colors, currentColor) => {
     .join(`\n`);
 };
 
-// Разметка повторяющихся дней
+// Разметка дней повторения
 const createRepeatingDaysMarkup = (days, repeatingDays) => {
   return days
     .map((day, index) => {
@@ -48,7 +48,7 @@ const createRepeatingDaysMarkup = (days, repeatingDays) => {
 };
 
 // Шаблон формы создания/редактирования задачи
-export const createTaskEditTemplate = (task) => {
+const createTaskEditTemplate = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
@@ -138,3 +138,27 @@ export const createTaskEditTemplate = (task) => {
     </article>`
   );
 };
+
+// Класс
+export default class TaskEdit {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskEditTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
