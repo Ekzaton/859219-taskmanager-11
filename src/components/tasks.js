@@ -1,21 +1,21 @@
 // Импорт
 import {createElement} from "../utils.js";
 
-// Шаблон основного контента
-const createBoardTemplate = () => {
+// Шаблон списка карточек
+const createTasksTemplate = () => {
   return (
-    `<section class="board container"></section>`
+    `<div class="board__tasks"></div>`
   );
 };
 
 // Класс
-export default class Board {
+export default class Tasks {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createBoardTemplate();
+    return createTasksTemplate();
   }
 
   getElement() {
