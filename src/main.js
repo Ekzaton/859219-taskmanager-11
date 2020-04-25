@@ -18,27 +18,44 @@ const TASK_COUNT = 20;
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
+// Отрисовка краточки задачи и формы создания/редактирования
 const renderTask = (taskListElement, task) => {
   const replaceTaskToEdit = () => {
-    taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+    taskListElement.replaceChild(taskEditElement, taskElement);
   };
 
-  const replaceEditToTask = (evt) => {
+  const replaceEditToTask = () => {
+    taskListElement.replaceChild(taskElement, taskEditElement);
+  };
+
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToTask();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const taskElement = new TaskComponent(task).getElement();
+  const editButton = taskElement.querySelector(`.card__btn--edit`);
+  editButton.addEventListener(`click`, () => {
+    replaceTaskToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  const taskEditElement = new TaskEditComponent(task).getElement();
+  const editForm = taskEditElement.querySelector(`form`);
+  editForm.addEventListener(`submit`, (evt) => {
     evt.preventDefault();
-    taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
-  };
+    replaceEditToTask();
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
 
-  const taskComponent = new TaskComponent(task);
-  const editButton = taskComponent.getElement().querySelector(`.card__btn--edit`);
-  editButton.addEventListener(`click`, replaceTaskToEdit);
-
-  const taskEditComponent = new TaskEditComponent(task);
-  const editForm = taskEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, replaceEditToTask);
-
-  render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
+  render(taskListElement, taskElement, RenderPosition.BEFOREEND);
 };
 
+// Отрисовка сортировки, списка карточек и кнопки
 const renderBoard = (boardComponent, tasks) => {
   render(boardComponent.getElement(), new SortComponent().getElement(), RenderPosition.BEFOREEND);
   render(boardComponent.getElement(), new TasksComponent().getElement(), RenderPosition.BEFOREEND);
@@ -74,9 +91,11 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
 
+// Отрисовка меню и фильтров
 render(siteHeaderElement, new SiteMenuComponent().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 
 const boardComponent = new BoardComponent();
+
 render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
 renderBoard(boardComponent, tasks);
