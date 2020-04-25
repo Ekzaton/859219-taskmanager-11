@@ -2,6 +2,7 @@
 import BoardComponent from "./components/board.js";
 import FilterComponent from "./components/filter.js";
 import LoadMoreButtonComponent from "./components/load-more-button.js";
+import NoTasksComponent from "./components/no-tasks.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import SortComponent from "./components/sort.js";
 import TaskComponent from "./components/task.js";
@@ -18,7 +19,7 @@ const TASK_COUNT = 20;
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
-// Отрисовка краточки задачи и формы создания/редактирования
+// Отрисовка карточки задачи и формы создания/редактирования
 const renderTask = (taskListElement, task) => {
   const replaceTaskToEdit = () => {
     taskListElement.replaceChild(taskEditElement, taskElement);
@@ -57,6 +58,13 @@ const renderTask = (taskListElement, task) => {
 
 // Отрисовка сортировки, списка карточек и кнопки
 const renderBoard = (boardComponent, tasks) => {
+  const isAllTasksArchived = tasks.every((task) => task.isArchive);
+
+  if (isAllTasksArchived) {
+    render(boardComponent.getElement(), new NoTasksComponent().getElement(), RenderPosition.BEFOREEND);
+    return;
+  }
+
   render(boardComponent.getElement(), new SortComponent().getElement(), RenderPosition.BEFOREEND);
   render(boardComponent.getElement(), new TasksComponent().getElement(), RenderPosition.BEFOREEND);
 
