@@ -12,7 +12,7 @@ import TasksComponent from "./components/tasks.js";
 // Моки
 import {generateFilters} from "./mock/filter.js";
 import {generateTasks} from "./mock/task.js";
-import {render, RenderPosition} from "./utils.js";
+import {render, RenderPosition} from "./utils/render.js";
 
 // Константы
 const TASK_COUNT = 20;
