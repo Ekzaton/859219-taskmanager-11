@@ -1,7 +1,7 @@
 // Импорт
 import AbstractComponent from "./abstract-component.js";
 
-// Шаблон основного контента
+// Шаблон доски задач
 const createBoardTemplate = () => {
   return (
     `<section class="board container"></section>`
