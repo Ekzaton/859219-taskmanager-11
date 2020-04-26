@@ -12,24 +12,33 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
-// Отрисовка DOM-элемента
-export const render = (container, element, place) => {
+// Отрисовка компонента
+export const render = (container, component, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
+      container.prepend(component.getElement());
       break;
     case RenderPosition.BEFOREEND:
-      container.append(element);
+      container.append(component.getElement());
       break;
   }
 };
 
-// Замена DOM-элемента
-export const replace = (parent, newElement, oldElement) => {
-  parent.replaceChild(newElement, oldElement);
+// Замена компонента
+export const replace = (newComponent, oldComponent) => {
+  const parentElement = oldComponent.getElement().parentElement;
+  const newElement = newComponent.getElement();
+  const oldElement = oldComponent.getElement();
+
+  const isExistElements = !!(parentElement && newElement && oldElement);
+
+  if (isExistElements && parentElement.contains(oldElement)) {
+    parentElement.replaceChild(newElement, oldElement);
+  }
 };
 
-// Удаление DOM-элемента
-export const remove = (element) => {
-  element.remove();
+// Удаление компонента
+export const remove = (component) => {
+  component.getElement().remove();
+  component.removeElement();
 };
