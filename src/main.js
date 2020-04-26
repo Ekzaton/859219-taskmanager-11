@@ -12,7 +12,7 @@ import TasksComponent from "./components/tasks.js";
 // Моки
 import {generateFilters} from "./mock/filter.js";
 import {generateTasks} from "./mock/task.js";
-import {render, RenderPosition} from "./utils/render.js";
+import {render, replace, remove, RenderPosition} from "./utils/render.js";
 
 // Константы
 const TASK_COUNT = 20;
@@ -22,11 +22,11 @@ const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 // Отрисовка карточки задачи и формы создания/редактирования
 const renderTask = (taskListElement, task) => {
   const replaceTaskToEdit = () => {
-    taskListElement.replaceChild(taskEditElement, taskElement);
+    replace(taskEditElement, taskElement);
   };
 
   const replaceEditToTask = () => {
-    taskListElement.replaceChild(taskElement, taskEditElement);
+    replace(taskElement, taskEditElement);
   };
 
   const onEscKeyDown = (evt) => {
@@ -87,7 +87,7 @@ const renderBoard = (boardComponent, tasks) => {
       .forEach((task) => renderTask(taskListElement, task));
 
     if (showingTasksCount >= tasks.length) {
-      loadMoreButtonComponent.getElement().remove();
+      remove(loadMoreButtonComponent.getElement());
       loadMoreButtonComponent.removeElement();
     }
   });

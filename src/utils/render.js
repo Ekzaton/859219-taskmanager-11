@@ -12,7 +12,7 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
-// Отрисовка компонента
+// Отрисовка DOM-элемента
 export const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
@@ -22,4 +22,14 @@ export const render = (container, element, place) => {
       container.append(element);
       break;
   }
+};
+
+// Замена DOM-элемента
+export const replace = (parent, newElement, oldElement) => {
+  parent.replaceChild(newElement, oldElement);
+};
+
+// Удаление DOM-элемента
+export const remove = (element) => {
+  element.remove();
 };
