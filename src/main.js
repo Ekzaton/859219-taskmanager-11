@@ -4,10 +4,12 @@ import BoardController from "./controllers/board.js";
 import FilterComponent from "./components/filter.js";
 import SiteMenuComponent from "./components/site-menu.js";
 
+// Утилиты
+import {render, RenderPosition} from "./utils/render.js";
+
 // Моки
 import {generateFilters} from "./mock/filter.js";
 import {generateTasks} from "./mock/task.js";
-import {render, RenderPosition} from "./utils/render.js";
 
 // Константы
 const TASK_COUNT = 20;
