@@ -45,7 +45,7 @@ const getSortedTasks = (tasks, sortType, from, to) => {
   return sortedTasks.slice(from, to);
 };
 
-// Контроллер
+// Контроллер доски задач
 export default class BoardController {
   constructor(container) {
     this._container = container;

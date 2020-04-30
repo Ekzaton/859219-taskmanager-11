@@ -5,12 +5,14 @@ import TaskEditComponent from "../components/task-edit.js";
 // Утилиты
 import {render, replace, RenderPosition} from "../utils/render.js";
 
-// Контроллер
+// Контроллер задачи
 export default class TaskController {
   constructor(container) {
     this._container = container;
+
     this._taskComponent = null;
     this._taskEditComponent = null;
+
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
@@ -21,6 +23,12 @@ export default class TaskController {
     this._taskComponent.setEditButtonClickHandler(() => {
       this._replaceTaskToEdit();
       document.addEventListener(`keydown`, this._onEscKeyDown);
+    });
+
+    this._taskComponent.setArchiveButtonClickHandler(() => {
+    });
+
+    this._taskComponent.setFavoritesButtonClickHandler(() => {
     });
 
     this._taskEditComponent.setSubmitHandler((evt) => {
