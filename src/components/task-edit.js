@@ -54,7 +54,7 @@ const createRepeatingDaysMarkup = (days, repeatingDays) => {
 };
 
 // Шаблон формы создания/редактирования задачи
-const createTaskEditTemplate = (task, options = {}) => {
+const createTaskEditTemplate = (task, options) => {
   const {description, dueDate, color} = task;
   const {isDateShowing, isRepeatingTask, activeRepeatingDays} = options;
 
@@ -180,6 +180,16 @@ export default class TaskEdit extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+  }
+
+  reset() {
+    const task = this._task;
+
+    this._isDateShowing = !!task.dueDate;
+    this._isRepeatingTask = Object.values(task.repeatingDays).some(Boolean);
+    this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
+
+    this.rerender();
   }
 
   setSubmitHandler(handler) {
