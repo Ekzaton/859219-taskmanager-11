@@ -178,10 +178,6 @@ export default class TaskEdit extends AbstractSmartComponent {
     this._subscribeOnEvents();
   }
 
-  rerender() {
-    super.rerender();
-  }
-
   reset() {
     const task = this._task;
 
