@@ -1,4 +1,4 @@
-// Импорт
+// Компоненты
 import AbstractComponent from "./abstract-component.js";
 
 // Шаблон кнопки «Load more»
