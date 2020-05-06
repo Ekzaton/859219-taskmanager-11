@@ -1,7 +1,11 @@
-// Импорт
+// Компоненты
 import AbstractComponent from "./abstract-component.js";
-import {MONTH_NAMES} from "../const.js";
+
+// Утилиты
 import {formatTime} from "../utils/common.js";
+
+// Константы
+import {MONTH_NAMES} from "../const.js";
 
 // Разметка кнопки
 const createButtonMarkup = (name, isActive = true) => {
