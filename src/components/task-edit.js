@@ -2,7 +2,7 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
 // Утилиты
-import {formatTime} from "../utils/common.js";
+import {formatTime, formatDate} from "../utils/common.js";
 
 // Константы
 import {COLORS, DAYS} from "../const.js";
@@ -72,7 +72,7 @@ const createTaskEditTemplate = (task, options) => {
   const isBlockSaveButton = (isDateShowing && isRepeatingTask) ||
     (isRepeatingTask && !isRepeating(activeRepeatingDays));
 
-  const date = (isDateShowing && dueDate) ? formatTime(dueDate) : ``;
+  const date = (isDateShowing && dueDate) ? formatDate(dueDate) : ``;
   const time = (isDateShowing && dueDate) ? formatTime(dueDate) : ``;
 
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
