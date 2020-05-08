@@ -2,7 +2,7 @@
 import AbstractComponent from "./abstract-component.js";
 
 // Утилиты
-import {formatTime, formatDate} from "../utils/common.js";
+import {formatTime, formatDate, isOverdueDate} from "../utils/common.js";
 
 // Разметка кнопки
 const createButtonMarkup = (name, isActive = true) => {
@@ -20,7 +20,7 @@ const createButtonMarkup = (name, isActive = true) => {
 const createTaskTemplate = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
 
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  const isExpired = dueDate instanceof Date && isOverdueDate(dueDate, new Date());
   const isDateShowing = !!dueDate;
 
   const date = isDateShowing ? formatDate(dueDate) : ``;

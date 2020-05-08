@@ -2,7 +2,7 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
 // Утилиты
-import {formatTime, formatDate} from "../utils/common.js";
+import {formatTime, formatDate, isRepeating, isOverdueDate} from "../utils/common.js";
 
 // Константы
 import {COLORS, DAYS} from "../const.js";
@@ -12,11 +12,6 @@ import flatpickr from "flatpickr";
 
 // Стили
 import "flatpickr/dist/flatpickr.min.css";
-
-// Повторение
-const isRepeating = (repeatingDays) => {
-  return Object.values(repeatingDays).some(Boolean);
-};
 
 // Разметка цветов
 const createColorsMarkup = (colors, currentColor) => {
@@ -68,7 +63,7 @@ const createTaskEditTemplate = (task, options) => {
   const {description, dueDate, color} = task;
   const {isDateShowing, isRepeatingTask, activeRepeatingDays} = options;
 
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  const isExpired = dueDate instanceof Date && isOverdueDate(dueDate, new Date());
   const isBlockSaveButton = (isDateShowing && isRepeatingTask) ||
     (isRepeatingTask && !isRepeating(activeRepeatingDays));
 
