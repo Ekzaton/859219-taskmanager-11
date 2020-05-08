@@ -29,8 +29,9 @@ const tasks = generateTasks(TASK_COUNT);
 const tasksModel = new TasksModel();
 tasksModel.setTasks(tasks);
 
-// Отрисовка фильтров
 const filterController = new FilterController(siteMainElement, tasksModel);
+
+// Отрисовка фильтров
 filterController.render();
 
 const boardComponent = new BoardComponent();
@@ -39,8 +40,11 @@ const boardComponent = new BoardComponent();
 render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
 
 const boardController = new BoardController(boardComponent, tasksModel);
+
+// Отрисовка задач
 boardController.render(tasks);
 
+// Создание новой задачи
 siteMenuComponent.setOnChange((menuItem) => {
   switch (menuItem) {
     case MenuItem.NEW_TASK:
