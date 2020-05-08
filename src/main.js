@@ -1,14 +1,15 @@
 // Компоненты
 import BoardComponent from "./components/board.js";
-import BoardController from "./controllers/board.js";
-import FilterComponent from "./components/filter.js";
 import SiteMenuComponent from "./components/site-menu.js";
+
+// Контроллеры
+import BoardController from "./controllers/board.js";
+import FilterController from "./controllers/filter.js";
 
 // Утилиты
 import {render, RenderPosition} from "./utils/render.js";
 
 // Моки
-import {generateFilters} from "./mock/filter.js";
 import {generateTasks} from "./mock/task.js";
 
 // Модели данных
@@ -20,14 +21,16 @@ const TASK_COUNT = 20;
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-const filters = generateFilters();
+// Отрисовка меню
+render(siteHeaderElement, new SiteMenuComponent(), RenderPosition.BEFOREEND);
+
 const tasks = generateTasks(TASK_COUNT);
 const tasksModel = new TasksModel();
 tasksModel.setTasks(tasks);
 
-// Отрисовка меню и фильтров
-render(siteHeaderElement, new SiteMenuComponent(), RenderPosition.BEFOREEND);
-render(siteMainElement, new FilterComponent(filters), RenderPosition.BEFOREEND);
+// Отрисовка фильтров
+const filterController = new FilterController(siteMainElement, tasksModel);
+filterController.render();
 
 const boardComponent = new BoardComponent();
 const boardController = new BoardController(boardComponent, tasksModel);
