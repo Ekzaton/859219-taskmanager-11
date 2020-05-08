@@ -139,7 +139,6 @@ export default class BoardController {
     const newTasks = renderTasks(taskListElement, sortedTasks, this._onDataChange, this._onViewChange);
     this._showedTaskControllers = newTasks;
 
-    remove(this._loadMoreButtonComponent);
     this._renderLoadMoreButton();
   }
 }
