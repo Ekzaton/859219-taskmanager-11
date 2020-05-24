@@ -10,14 +10,14 @@ import FilterController from "./controllers/filter.js";
 // Утилиты
 import {render, RenderPosition} from "./utils/render.js";
 
-// Моки
-import {generateTasks} from "./mock/task.js";
+// Константы
+const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=`;
+
+// API
+import API from "./api.js";
 
 // Модели данных
 import TasksModel from "./models/tasks.js";
-
-// Константы
-const TASK_COUNT = 20;
 
 const dateTo = new Date();
 const dateFrom = (() => {
@@ -25,10 +25,8 @@ const dateFrom = (() => {
   d.setDate(d.getDate() - 7);
   return d;
 })();
-const tasks = generateTasks(TASK_COUNT);
+const api = new API(AUTHORIZATION);
 const tasksModel = new TasksModel();
-
-tasksModel.setTasks(tasks);
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
@@ -44,11 +42,10 @@ const filterController = new FilterController(siteMainElement, tasksModel);
 render(siteHeaderElement, siteMenuComponent, RenderPosition.BEFOREEND);
 filterController.render();
 render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
-boardController.render();
 render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
 statisticsComponent.hide();
 
-// Создание новой задачи
+// Переключение пунктов меню
 siteMenuComponent.setOnChange((menuItem) => {
   switch (menuItem) {
     case MenuItem.NEW_TASK:
@@ -67,3 +64,10 @@ siteMenuComponent.setOnChange((menuItem) => {
       break;
   }
 });
+
+// Получение задач
+api.getTasks()
+  .then((tasks) => {
+    tasksModel.setTasks(tasks);
+    boardController.render();
+  });
