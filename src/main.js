@@ -12,6 +12,7 @@ import {render, RenderPosition} from "./utils/render.js";
 
 // Константы
 const AUTHORIZATION = `Basic vi34jggjggxs60gkjpgke7`;
+const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
 
 // API
 import API from "./api.js";
@@ -25,7 +26,7 @@ const dateFrom = (() => {
   d.setDate(d.getDate() - 7);
   return d;
 })();
-const api = new API(AUTHORIZATION);
+const api = new API(END_POINT, AUTHORIZATION);
 const tasksModel = new TasksModel();
 
 const siteMainElement = document.querySelector(`.main`);
