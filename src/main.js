@@ -10,40 +10,15 @@ import FilterController from "./controllers/filter.js";
 // Утилиты
 import {render, RenderPosition} from "./utils/render.js";
 
-// Моки
-import {generateTasks} from "./mock/task.js";
+// Константы
+const AUTHORIZATION = `Basic vi34jggjggxs60gkjpgke7`;
+const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
+
+// API
+import API from "./api.js";
 
 // Модели данных
 import TasksModel from "./models/tasks.js";
-
-// Константы
-const TASK_COUNT = 20;
-
-const siteMainElement = document.querySelector(`.main`);
-const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
-const siteMenuComponent = new SiteMenuComponent();
-
-// Отрисовка меню
-render(siteHeaderElement, siteMenuComponent, RenderPosition.BEFOREEND);
-
-const tasks = generateTasks(TASK_COUNT);
-const tasksModel = new TasksModel();
-tasksModel.setTasks(tasks);
-
-const filterController = new FilterController(siteMainElement, tasksModel);
-
-// Отрисовка фильтров
-filterController.render();
-
-const boardComponent = new BoardComponent();
-
-// Ортрисовка доски задач
-render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
-
-const boardController = new BoardController(boardComponent, tasksModel);
-
-// Отрисовка задач
-boardController.render(tasks);
 
 const dateTo = new Date();
 const dateFrom = (() => {
@@ -51,13 +26,27 @@ const dateFrom = (() => {
   d.setDate(d.getDate() - 7);
   return d;
 })();
+const api = new API(END_POINT, AUTHORIZATION);
+const tasksModel = new TasksModel();
+
+const siteMainElement = document.querySelector(`.main`);
+const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+
+const siteMenuComponent = new SiteMenuComponent();
+const boardComponent = new BoardComponent();
 const statisticsComponent = new StatisticsComponent({tasks: tasksModel, dateFrom, dateTo});
 
-// Отрисовка статистики
+const boardController = new BoardController(boardComponent, tasksModel, api);
+const filterController = new FilterController(siteMainElement, tasksModel);
+
+// Отрисовка
+render(siteHeaderElement, siteMenuComponent, RenderPosition.BEFOREEND);
+filterController.render();
+render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
 render(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
 statisticsComponent.hide();
 
-// Создание новой задачи
+// Переключение пунктов меню
 siteMenuComponent.setOnChange((menuItem) => {
   switch (menuItem) {
     case MenuItem.NEW_TASK:
@@ -76,3 +65,10 @@ siteMenuComponent.setOnChange((menuItem) => {
       break;
   }
 });
+
+// Получение задач
+api.getTasks()
+  .then((tasks) => {
+    tasksModel.setTasks(tasks);
+    boardController.render();
+  });
