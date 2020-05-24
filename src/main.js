@@ -11,7 +11,7 @@ import FilterController from "./controllers/filter.js";
 import {render, RenderPosition} from "./utils/render.js";
 
 // Константы
-const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=`;
+const AUTHORIZATION = `Basic vi34jggjggxs60gkjpgke7`;
 
 // API
 import API from "./api.js";
