@@ -15,7 +15,8 @@ const AUTHORIZATION = `Basic vi34jggjggxs60gkjpgke7`;
 const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
 
 // API
-import API from "./api.js";
+import API from "./api/index.js";
+import Provider from "./api/provider.js";
 
 // Модели данных
 import TasksModel from "./models/tasks.js";
@@ -26,7 +27,9 @@ const dateFrom = (() => {
   d.setDate(d.getDate() - 7);
   return d;
 })();
+
 const api = new API(END_POINT, AUTHORIZATION);
+const apiWithProvider = new Provider(api);
 const tasksModel = new TasksModel();
 
 const siteMainElement = document.querySelector(`.main`);
@@ -36,7 +39,7 @@ const siteMenuComponent = new SiteMenuComponent();
 const boardComponent = new BoardComponent();
 const statisticsComponent = new StatisticsComponent({tasks: tasksModel, dateFrom, dateTo});
 
-const boardController = new BoardController(boardComponent, tasksModel, api);
+const boardController = new BoardController(boardComponent, tasksModel, apiWithProvider);
 const filterController = new FilterController(siteMainElement, tasksModel);
 
 // Отрисовка
@@ -67,7 +70,7 @@ siteMenuComponent.setOnChange((menuItem) => {
 });
 
 // Получение задач
-api.getTasks()
+apiWithProvider.getTasks()
   .then((tasks) => {
     tasksModel.setTasks(tasks);
     boardController.render();
