@@ -1,6 +1,9 @@
 // Модели
 import Task from "../models/task";
 
+// Библиотеки
+import {nanoid} from "nanoid";
+
 // Проверка доступности интернета
 const isOnline = () => {
   return window.navigator.onLine;
@@ -30,11 +33,20 @@ export default class Provider {
 
   createTask(task) {
     if (isOnline()) {
-      return this._api.createTask(task);
+      return this._api.createTask(task)
+        .then((newTask) => {
+          this._store.setItem(newTask.id, newTask.toRAW());
+
+          return newTask;
+        });
     }
 
-    // TODO: Реализовать логику при отсутствии интернета
-    return Promise.reject(`offline logic is not implemented`);
+    const localNewTaskId = nanoid();
+    const localNewTask = Task.clone(Object.assign(task, {id: localNewTaskId}));
+
+    this._store.setItem(localNewTask.id, localNewTask.toRAW());
+
+    return Promise.resolve(localNewTask);
   }
 
   updateTask(id, task) {
