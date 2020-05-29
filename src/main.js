@@ -13,10 +13,14 @@ import {render, RenderPosition} from "./utils/render.js";
 // Константы
 const AUTHORIZATION = `Basic vi34jggjggxs60gkjpgke7`;
 const END_POINT = `https://11.ecmascript.pages.academy/task-manager`;
+const STORE_PREFIX = `taskmanager-localstorage`;
+const STORE_VER = `v1`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
 // API
 import API from "./api/index.js";
 import Provider from "./api/provider.js";
+import Store from "./api/store.js";
 
 // Модели данных
 import TasksModel from "./models/tasks.js";
@@ -29,7 +33,8 @@ const dateFrom = (() => {
 })();
 
 const api = new API(END_POINT, AUTHORIZATION);
-const apiWithProvider = new Provider(api);
+const store = new Store(STORE_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, store);
 const tasksModel = new TasksModel();
 
 const siteMainElement = document.querySelector(`.main`);
